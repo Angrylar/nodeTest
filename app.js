@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var lessMiddleware = require('less-middleware');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
+var indexRouter = require('./routes/app');
 // var usersRouter = require('./routes/users');
 var controller = require('./controller.js');
 console.log(typeof(controller))
@@ -25,7 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
-app.use(controller());
+app.use(controller('/test', 'routes/test'));
+app.use(controller('/app', 'routes/app'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

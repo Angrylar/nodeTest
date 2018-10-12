@@ -11,11 +11,12 @@ var filePath = path.resolve(`${__dirname}/routes`);
 // fileDisplay(filePath, 'js');
 
 /**
- * 
+ * @param {object} router require('express').Router()
  * @param {string} filePath 需要遍历的文件路径
  * @param {string} typeFile 需要遍历的文件后缀
+ * @param {string} typeFile 接口的baseUrl
  */
-function fileDisplay(router, filePath, typeFile) {
+function fileDisplay(router, filePath, typeFile, baseUrl) {
   //根据文件路径读取文件，返回文件列表
   fs.readdir(filePath, function (err, files) {
     if (err) {
@@ -36,7 +37,7 @@ function fileDisplay(router, filePath, typeFile) {
             if (isFile && filedir.endsWith(typeFile)) {
               console.log(filedir);
               // console.log(require(filedir))
-              router.use('/abcd', require(filedir))
+              router.use(baseUrl, require(filedir))
               return require(filedir);
             }
             if (isDir) {
@@ -49,11 +50,11 @@ function fileDisplay(router, filePath, typeFile) {
   });
 }
 
-module.exports = function() {
+module.exports = function(baseUrl, folderPath) {
   var express = require('express');
   var router = express.Router();
-  var filePath = path.resolve(`${__dirname}/routes`);
-  console.log(filePath)
-  fileDisplay(router, filePath, 'js');
+  var filePath = path.resolve(`${__dirname}/${folderPath}`);
+  // console.log(filePath)
+  fileDisplay(router, filePath, 'js', baseUrl);
   return router;
 }
